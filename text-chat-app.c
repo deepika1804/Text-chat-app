@@ -90,7 +90,7 @@ int receivebuffer(int s,int len,char *outbuf){
 	
 	
 	char *recvLen_buf = (char*)calloc(len, sizeof(char));
-	// char *data_buf;
+	
 	
 	int bytesleft;
 	int n;
@@ -102,7 +102,7 @@ int receivebuffer(int s,int len,char *outbuf){
 	int total = 0;
 	int totalLen = bytesleft;
 	
-	// memset(recvLen_buf,'\0',strlen(recvLen_buf));
+	
 	
 	memset(recvLen_buf,'\0',sizeof(recvLen_buf));
 	char *data_buf = (char*)calloc((totalLen + 1), sizeof(char));
@@ -135,11 +135,11 @@ int receivebuffer(int s,int len,char *outbuf){
     return n==-1?-1:(total-5); 
 }
 
-//change this
+
 char *firstWord=NULL, *secondWord=NULL, *remain=NULL;
 
 int breakIntoThreeParts(char *sendBuff){
-	// printf("\nBreaking the words\n");
+	
 	firstWord = "";
 	secondWord = "";
 	remain = "";
@@ -209,20 +209,20 @@ int breakIntoThreeParts(char *sendBuff){
 	
     
 	
-	//memset(inputCopy,0,strlen(inputCopy));
+	
 	inputCopy=NULL;
 	
 	return 0;
 }
 
 void createSendingString(int s,char *stdinBuffer){
-	// printf("\nCreating sending string\n");
+	
 	char *dest = NULL;
 	int len = strlen(stdinBuffer);
 	
 	dest = malloc(len + 5);
 	sprintf(dest,"%5d%s",len,stdinBuffer);
-	// printf("\nsending string : %s\n",stdinBuffer);
+	
 	int totLen = strlen(dest);
 	sendall(s,dest,&totLen);
 	
@@ -625,9 +625,7 @@ if(*argv[1] == 's'){
 				    	}else if(strcmp("RESET",command_str)==0){
 				    		cse4589_print_and_log("[%s:SUCCESS]\n", command_str);
 				    		cse4589_print_and_log("RESETTING...");
-				    		//free(receivedStr);
 				    		
-				    		//receivedStr = NULL;
 				    		numOfListeners = 0;
 				    		for(int j=1 ; j<fdmax+1;j++){
 				    			if(j!= server_socket){
@@ -796,7 +794,7 @@ if(*argv[1] == 's'){
 		    		break;
 			    }else if(FD_ISSET(server_socket,&read_fds)){ // for server sockets - new connection
 		    	//handle new connections
-		    		// printf("\n new connection\n");
+		    		
 		    		if(numOfListeners <= MAXCLIENTS){
 		    			int new_sock;
 						
@@ -860,7 +858,7 @@ if(*argv[1] == 's'){
 					    	
 					    	//new connection add to the client list
 					    	if(!oldLoggedOutClient){
-					    		// printf("\nconnection came\n");
+					    		
 					    		numOfListeners++;
 					    		for(int i=0;i<MAXCLIENTS;i++){
 					    			if(clientNo[i].port_num == 0){
@@ -911,7 +909,7 @@ if(*argv[1] == 's'){
 				    break;
 				}else if(FD_ISSET(j,&read_fds) && j != server_socket && j != STDIN){
 			    	//handle data from client:will write it later
-			    	// printf("HANDLE CLIENT with socket %d\n",j);
+			    	
 			    	bytes_rcvd = receivebuffer(j,5,receivedStr); //first receive length
 			    	
 			    	if(bytes_rcvd <= 0){
@@ -1206,13 +1204,13 @@ if(*argv[1] == 's'){
 
 						    		dest_server_address.sin_port = htons(atoi(remain)); //DestinationPORT-specified from login
 									//strcpy(dest_server_address.sin_addr.s_addr,inet_addr("128.205.36.46"));//Destination address-specified from login inet_addr("128.205.36.45")
-									// printf("\nserver port is %d\n",dest_server_address.sin_port);
+									
 									inet_pton(AF_INET, secondWord, &(dest_server_address.sin_addr));
 									
 									//client is connecting to server -dest ip and port
-									// printf("\nConnecting.....\n");
+									
 									int connection_status = connect(client_socket, (struct sockaddr*) &dest_server_address, sizeof(dest_server_address));
-									//printf("\nMY IP %s and MY PORT %d\n",inet_ntoa(client_address.sin_addr),ntohs(client_address.sin_port));
+									
 									//check for error with the connection
 								    if(connection_status == -1){
 								    	
@@ -1240,7 +1238,7 @@ if(*argv[1] == 's'){
 						    		if(acceptBuffer){
 						    			acceptBuffer = 0;
 						    			int bytes_rcvd = receivebuffer(client_socket,5,receivedStr); //first receive length
-							    		//printf("\nprinting received %s\n",receivedStr);
+							    		
 							    		num_clients = breakTheResponse(receivedStr);
 						    		}
 						    		if(connection_status != -1)
@@ -1249,7 +1247,7 @@ if(*argv[1] == 's'){
 					    			cse4589_print_and_log("[%s:ERROR]\n", command_str);
 					    		}
 					    		
-					    		// free(res);
+					    		
 					    		
 
 					    	}else if(strcmp(list[5],command_str)==0 && logged_in){ //REFRESH
@@ -1264,9 +1262,7 @@ if(*argv[1] == 's'){
 							    
 							    //printf("%d",num_clients);
 					    	}else if(strcmp(list[6],command_str)==0 && logged_in){ //send
-					    		//----------------------------//
-								//----------------------------// if present then execute code below
-								// if(validateIPaddress(secondWord))
+					    		
 								if(secondWord ==NULL || remain == NULL || (secondWord!= NULL && inet_pton(AF_INET,secondWord,&(sa->sin_addr)) != 1)){
 									cse4589_print_and_log("[%s:ERROR]\n", command_str);
 									cse4589_print_and_log("[%s:END]\n", command_str);
@@ -1420,7 +1416,7 @@ if(*argv[1] == 's'){
 					    		logged_in = 0;
 					    		acceptBuffer = 0;
 
-					    		// createSendingString(client_socket,stdinBuffer);
+					    		
 					    		
 					    		for(int sock=0;sock<=sockmax;sock++){
 					    			if(FD_ISSET(sock,&master)){
@@ -1472,7 +1468,7 @@ if(*argv[1] == 's'){
 							
 							int bytes_rcvd = receivebuffer(client_socket,5,receivedStr); //first receive length
 							
-							// printf("\nEvent message Received\n");
+							
 							breakTheResponse(receivedStr);
 							if(bytes_rcvd < 0){
 								
